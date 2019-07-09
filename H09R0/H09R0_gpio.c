@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * File Name          : H0FR6_gpio.c
+  * File Name          : H09R0_gpio.c
   * Description        : This file provides code for the configuration
   *                      of all used GPIO pins.
   ******************************************************************************
@@ -69,19 +69,6 @@ void IND_LED_Init(void)
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	HAL_GPIO_Init(_IND_LED_PORT, &GPIO_InitStruct);
-}
-
-/* --- Configure SSR GPIO --- 
-*/
-void SSR_Init(void)
-{
-	GPIO_InitTypeDef GPIO_InitStruct;
-	
-	GPIO_InitStruct.Pin = _SSR_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
-	HAL_GPIO_Init(_SSR_PORT, &GPIO_InitStruct);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
