@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>H08R6x</name>
+	<name>H09R0x</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -20,11 +20,9 @@
 	</buildSpec>
 	<natures>
 		<nature>com.st.stm32cube.ide.mcu.MCUProjectNature</nature>
-		<nature>com.st.stm32cube.ide.mcu.MCUCubeProjectNature</nature>
 		<nature>org.eclipse.cdt.core.cnature</nature>
-		<nature>com.st.stm32cube.ide.mcu.MCUCubeIdeServicesRevAProjectNature</nature>
-		<nature>com.st.stm32cube.ide.mcu.MCUAdvancedStructureProjectNature</nature>
-		<nature>com.st.stm32cube.ide.mcu.MCUEndUserDisabledTrustZoneProjectNature</nature>
+		<nature>com.st.stm32cube.ide.mcu.MCUCubeIdeServicesRevAev2ProjectNature</nature>
+		<nature>com.st.stm32cube.ide.mcu.MCUManagedMakefileProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCUSingleCpuProjectNature</nature>
 		<nature>com.st.stm32cube.ide.mcu.MCURootProjectNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
@@ -37,7 +35,7 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>H08R6</name>
+			<name>H09R0</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -117,6 +115,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/BOS/BOS_messaging.c</locationURI>
 		</link>
 		<link>
+			<name>BOS/BOS_messaging.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/BOS/BOS_messaging.h</locationURI>
+		</link>
+		<link>
 			<name>BOS/BOS_msgparser.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/BOS/BOS_msgparser.c</locationURI>
@@ -142,84 +145,69 @@
 			<locationURI>PARENT-1-PROJECT_LOC/BOS/README.md</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6.c</name>
+			<name>H09R0/H09R0.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6.h</name>
+			<name>H09R0/H09R0.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0.h</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_MemoryMap.h</name>
+			<name>H09R0/H09R0_dma.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_MemoryMap.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_dma.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_dma.c</name>
+			<name>H09R0/H09R0_dma.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_dma.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_dma.h</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_dma.h</name>
+			<name>H09R0/H09R0_gpio.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_dma.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_gpio.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_gpio.c</name>
+			<name>H09R0/H09R0_gpio.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_gpio.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_gpio.h</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_gpio.h</name>
+			<name>H09R0/H09R0_it.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_gpio.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_it.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_i2c.c</name>
+			<name>H09R0/H09R0_rtc.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_i2c.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_rtc.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_i2c.h</name>
+			<name>H09R0/H09R0_timers.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_i2c.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_timers.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_it.c</name>
+			<name>H09R0/H09R0_uart.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_it.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_uart.c</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_rtc.c</name>
+			<name>H09R0/H09R0_uart.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_rtc.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_uart.h</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_timers.c</name>
+			<name>H09R0/startup_stm32f091xc.s</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_timers.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/startup_stm32f091xc.s</locationURI>
 		</link>
 		<link>
-			<name>H08R6/H08R6_uart.c</name>
+			<name>H09R0/stm32f0xx_hal_conf.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_uart.c</locationURI>
-		</link>
-		<link>
-			<name>H08R6/H08R6_uart.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/H08R6_uart.h</locationURI>
-		</link>
-		<link>
-			<name>H08R6/startup_stm32f091xc.s</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/startup_stm32f091xc.s</locationURI>
-		</link>
-		<link>
-			<name>H08R6/stm32f0xx_hal_conf.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/H08R6/stm32f0xx_hal_conf.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/stm32f0xx_hal_conf.h</locationURI>
 		</link>
 		<link>
 			<name>Thirdparty/.git</name>
@@ -247,11 +235,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>Thirdparty/VL53L0X_1.0.2</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>User/main.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/User/main.c</locationURI>
@@ -262,9 +245,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/User/project.h</locationURI>
 		</link>
 		<link>
-			<name>User/topology_1.h</name>
+			<name>User/topology_ex.h</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/User/topology_1.h</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/User/topology_ex.h</locationURI>
 		</link>
 		<link>
 			<name>Thirdparty/CMSIS/Device</name>
@@ -295,16 +278,6 @@
 			<name>Thirdparty/STM32F0xx_HAL_Driver/Src</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Release_Notes.html</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Release_Notes.html</locationURI>
 		</link>
 		<link>
 			<name>Thirdparty/CMSIS/Device/ST</name>
@@ -827,16 +800,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c</locationURI>
 		</link>
 		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>Thirdparty/CMSIS/Device/ST/STM32F0xx</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -900,26 +863,6 @@
 			<name>Thirdparty/STM32F0xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/STM32F0xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/inc</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/src</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>Thirdparty/CMSIS/Device/ST/STM32F0xx/Include</name>
@@ -1027,101 +970,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_calibration.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_calibration.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_core.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_core.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_ranging.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_ranging.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_strings.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_api_strings.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_def.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_def.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_device.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_device.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_interrupt_threshold_settings.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_interrupt_threshold_settings.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_tuning.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/inc/vl53l0x_tuning.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api.c</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_calibration.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_calibration.c</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_core.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_core.c</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_ranging.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_ranging.c</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_strings.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/core/src/vl53l0x_api_strings.c</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_i2c_platform.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_i2c_platform.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_platform.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_platform.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_platform_log.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_platform_log.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_types.h</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/platform/inc/vl53l0x_types.h</locationURI>
-		</link>
-		<link>
-			<name>Thirdparty/VL53L0X_1.0.2/Api/platform/src/vl53l0x_platform.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/VL53L0X_1.0.2/Api/platform/src/vl53l0x_platform.c</locationURI>
-		</link>
-		<link>
 			<name>Thirdparty/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/CMSIS/Device/ST/STM32F0xx/Include/stm32f030x6.h</locationURI>
@@ -1227,6 +1075,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/Middleware/FreeRTOS/Source/portable/MemMang/heap_4.c</locationURI>
 		</link>
 		<link>
+			<name>Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/gcc</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/system_stm32f0xx.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/system_stm32f0xx.c</locationURI>
@@ -1242,15 +1095,4 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Thirdparty/Middleware/FreeRTOS/Source/portable/GCC/ARM_CM0/portmacro.h</locationURI>
 		</link>
 	</linkedResources>
-	<filteredResources>
-		<filter>
-			<id>1614856409833</id>
-			<name></name>
-			<type>10</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-H08R6x</arguments>
-			</matcher>
-		</filter>
-	</filteredResources>
 </projectDescription>

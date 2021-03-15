@@ -10,27 +10,14 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include User/subdir.mk
--include Thirdparty/VL53L0X_1.0.2/Api/platform/src/subdir.mk
--include Thirdparty/VL53L0X_1.0.2/Api/core/src/subdir.mk
 -include Thirdparty/STM32F0xx_HAL_Driver/Src/subdir.mk
 -include Thirdparty/Middleware/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Thirdparty/Middleware/FreeRTOS/Source/portable/GCC/ARM_CM0/subdir.mk
 -include Thirdparty/Middleware/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
 -include Thirdparty/Middleware/FreeRTOS/Source/subdir.mk
+-include Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/gcc/subdir.mk
 -include Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/subdir.mk
--include H08R6/subdir.mk
--include Debug/User/subdir.mk
--include Debug/Thirdparty/VL53L0X_1.0.2/Api/platform/src/subdir.mk
--include Debug/Thirdparty/VL53L0X_1.0.2/Api/core/src/subdir.mk
--include Debug/Thirdparty/STM32F0xx_HAL_Driver/Src/subdir.mk
--include Debug/Thirdparty/Middleware/FreeRTOS/Source/portable/MemMang/subdir.mk
--include Debug/Thirdparty/Middleware/FreeRTOS/Source/portable/GCC/ARM_CM0/subdir.mk
--include Debug/Thirdparty/Middleware/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
--include Debug/Thirdparty/Middleware/FreeRTOS/Source/subdir.mk
--include Debug/Thirdparty/CMSIS/Device/ST/STM32F0xx/Source/Templates/subdir.mk
--include Debug/H08R6/subdir.mk
--include Debug/BOS/subdir.mk
--include Debug/subdir.mk
+-include H09R0/subdir.mk
 -include BOS/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -55,35 +42,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := H08R6x
+BUILD_ARTIFACT_NAME := H09R0x
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME).$(BUILD_ARTIFACT_EXTENSION)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-H08R6x.elf \
+H09R0x.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-H08R6x.list \
+H09R0x.list \
 
-OBJCOPY_HEX += \
-H08R6x.hex \
+OBJCOPY_BIN += \
+H09R0x.bin \
 
 
 # All Target
-all:
-	+@$(MAKE) --no-print-directory main-build && $(MAKE) --no-print-directory post-build
+all: main-build
 
 # Main-build Target
-main-build: H08R6x.elf secondary-outputs
+main-build: H09R0x.elf secondary-outputs
 
 # Tool invocations
-H08R6x.elf: $(OBJS) $(USER_OBJS) D:\Hexabitz\for\ Release\Modules\ firmware\H08R6x\STM32CubeIDE\STM32F091RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "H08R6x.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\Hexabitz\for Release\Modules firmware\H08R6x\STM32CubeIDE\STM32F091RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="H08R6x.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+H09R0x.elf: $(OBJS) $(USER_OBJS) D:\Hexabitz\for\ Release\Modules\ firmware\H09R0x\STM32CubeIDE\STM32F091RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "H09R0x.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\Hexabitz\for Release\Modules firmware\H09R0x\STM32CubeIDE\STM32F091RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="H09R0x.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -92,13 +78,13 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-H08R6x.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "H08R6x.list"
+H09R0x.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "H09R0x.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-H08R6x.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "H08R6x.hex"
+H09R0x.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "H09R0x.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
@@ -107,11 +93,7 @@ clean:
 	-$(RM) *
 	-@echo ' '
 
-post-build:
-	arm-none-eabi-objcopy -O ihex H08R6x.elf H08R6x.hex
-	-@echo ' '
-
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
@@ -121,6 +103,6 @@ warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
 .PHONY: all clean dependents fail-specified-linker-script-missing warn-no-linker-script-specified
-.SECONDARY: post-build
+.SECONDARY:
 
 -include ../makefile.targets

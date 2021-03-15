@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * File Name          : H0FR6_gpio.h
+  * File Name          : H09R0_gpio.h
   * Description        : This file contains all the functions prototypes for 
   *                      the gpio  
   ******************************************************************************
@@ -33,13 +33,13 @@
   */
 	
 /*
-		MODIFIED by Hexabitz for BitzOS (BOS) V0.1.6 - Copyright (C) 2017-2019 Hexabitz
+		MODIFIED by Hexabitz for BitzOS (BOS) V0.2.4 - Copyright (C) 2017-2021 Hexabitz
     All rights reserved
 */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __H0FR6_gpio_H
-#define __H0FR6_gpio_H
+#ifndef __H09R0_gpio_H
+#define __H09R0_gpio_H
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -48,9 +48,9 @@
 #include "stm32f0xx_hal.h"
 
 
-extern void MX_GPIO_Init(void);
+extern void GPIO_Init(void);
 extern void IND_LED_Init(void);
-extern void SSR_Init(void);
+extern void Relay_Init(void);
 
 
 #ifdef __cplusplus
