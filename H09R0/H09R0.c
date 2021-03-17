@@ -9,7 +9,7 @@
 		
 		Required MCU resources : 
 		
-			>> USARTs 1,2,3,5,6 for module ports.
+			>> USARTs 1,2,3,4,6 for module ports.
 			>> Timer 3 (Ch3) for Relay PWM (H0FR6 only).
 			>> GPIOB 0 for Relay.
 			
@@ -20,10 +20,10 @@
 
 
 /* Define UART variables */
+UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
-UART_HandleTypeDef huart5;
 UART_HandleTypeDef huart6;
 
 /* Module exported parameters ------------------------------------------------*/
@@ -274,8 +274,8 @@ void Module_Init(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
-  MX_USART5_UART_Init();
-	MX_USART6_UART_Init();
+  MX_USART4_UART_Init();
+  MX_USART6_UART_Init();
 	
 	
 
@@ -306,7 +306,7 @@ void RegisterModuleCLICommands(void)
 */
 uint8_t GetPort(UART_HandleTypeDef *huart)
 {
-	if (huart->Instance == USART5)
+	if (huart->Instance == USART4)
 			return P1;
 	else if (huart->Instance == USART2)
 			return P2;

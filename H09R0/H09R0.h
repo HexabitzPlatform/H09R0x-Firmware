@@ -40,11 +40,11 @@
 #define _Usart1 1
 #define _Usart2 1
 #define _Usart3 1
-#define _Usart5 1
+#define _Usart4 1
 #define _Usart6 1
 
 /* Port-UART mapping */
-#define P1uart &huart5
+#define P1uart &huart4
 #define P2uart &huart2	
 #define P3uart &huart6	
 #define P4uart &huart3
@@ -68,6 +68,12 @@
 #define	USART3_TX_PORT	GPIOB
 #define	USART3_RX_PORT	GPIOB
 #define	USART3_AF				GPIO_AF4_USART3
+
+#define	USART4_TX_PIN		GPIO_PIN_0
+#define	USART4_RX_PIN		GPIO_PIN_1
+#define	USART4_TX_PORT	GPIOA
+#define	USART4_RX_PORT	GPIOA
+#define	USART4_AF				GPIO_AF4_USART4
 
 #define	USART5_TX_PIN		GPIO_PIN_3
 #define	USART5_RX_PIN		GPIO_PIN_4
@@ -125,14 +131,14 @@ typedef enum
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
-extern UART_HandleTypeDef huart5;
+extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart6;
 
 /* Define UART Init prototypes */
 extern void MX_USART1_UART_Init(void);
 extern void MX_USART2_UART_Init(void);
 extern void MX_USART3_UART_Init(void);
-extern void MX_USART5_UART_Init(void);
+extern void MX_USART4_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
 
 extern Relay_state_t Relay_State; 

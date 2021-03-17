@@ -55,8 +55,8 @@ void GPIO_Init(void)
   __GPIOC_CLK_ENABLE();
   __GPIOA_CLK_ENABLE();
   __GPIOD_CLK_ENABLE();
-	__GPIOB_CLK_ENABLE();
-	__GPIOF_CLK_ENABLE();		// for HSE and Boot0
+  __GPIOB_CLK_ENABLE();
+  __GPIOF_CLK_ENABLE();		// for HSE and Boot0
 	
 	IND_LED_Init();
 }
@@ -92,7 +92,7 @@ uint8_t IsFactoryReset(void)
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
   __GPIOC_CLK_ENABLE();
-	__GPIOD_CLK_ENABLE();
+  __GPIOD_CLK_ENABLE();
 	
 	/* Get GPIOs */
 	GetPortGPIOs(P1, &P1_TX_Port, &P1_TX_Pin, &P1_RX_Port, &P1_RX_Pin);
