@@ -155,6 +155,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0.h</locationURI>
 		</link>
 		<link>
+			<name>H09R0/H09R0_adc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_adc.c</locationURI>
+		</link>
+		<link>
+			<name>H09R0/H09R0_adc.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_adc.h</locationURI>
+		</link>
+		<link>
 			<name>H09R0/H09R0_dma.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/H09R0/H09R0_dma.c</locationURI>

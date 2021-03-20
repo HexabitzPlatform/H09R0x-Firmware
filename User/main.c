@@ -42,6 +42,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+uint32_t Thermo_buffer[1]={0};
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -90,10 +91,11 @@ int main(void)
 void UserTask(void * argument)
 {
 
-	
+	HAL_ADC_Start_DMA(&hadc, Thermo_buffer, 1);
   /* Infinite loop */
   for(;;)
   {
+	  HAL_Delay(100);
 
   }
 }

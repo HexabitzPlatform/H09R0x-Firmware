@@ -134,12 +134,20 @@ extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart6;
 
+/* Define ADC_DMA Init prototypes */
+extern DMA_HandleTypeDef hdma_adc;
+extern ADC_HandleTypeDef hadc;
+
 /* Define UART Init prototypes */
 extern void MX_USART1_UART_Init(void);
 extern void MX_USART2_UART_Init(void);
 extern void MX_USART3_UART_Init(void);
 extern void MX_USART4_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
+
+
+/* Define UART Init prototypes */
+extern void MX_ADC_Init(void);
 
 extern Relay_state_t Relay_State; 
 extern uint8_t RelayindMode;

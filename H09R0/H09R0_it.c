@@ -39,6 +39,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "BOS.h"
 
+extern DMA_HandleTypeDef hdma_adc;
+extern ADC_HandleTypeDef hadc;
 
 /* External variables --------------------------------------------------------*/
 extern uint8_t UARTRxBuf[NumOfPorts][MSG_RX_BUF_SIZE];
@@ -200,6 +202,10 @@ void DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler(void)
 	} else if (HAL_DMA_GET_IT_SOURCE(DMA1,DMA_ISR_GIF7) == SET) {
 		HAL_DMA_IRQHandler(&msgTxDMA[2]);
 	}
+
+	 else if (HAL_DMA_GET_IT_SOURCE(DMA2,DMA_ISR_GIF5) == SET) {
+     	HAL_DMA_IRQHandler(&hdma_adc);
+	}
 }
 
 /*-----------------------------------------------------------*/
@@ -251,6 +257,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		// Set a port-specific flag here and let the backend task restart DMA
 		MsgDMAStopped[GetPort(huart)-1] = true;	
 	}
+}
+
+/**
+  * @brief This function handles ADC and COMP interrupts (COMP interrupts through EXTI lines 21 and 22).
+  */
+
+void ADC1_COMP_IRQHandler(void)
+{
+  /* USER CODE BEGIN ADC1_COMP_IRQn 0 */
+
+  /* USER CODE END ADC1_COMP_IRQn 0 */
+  HAL_ADC_IRQHandler(&hadc);
+  /* USER CODE BEGIN ADC1_COMP_IRQn 1 */
+
+  /* USER CODE END ADC1_COMP_IRQn 1 */
 }
 
 /*-----------------------------------------------------------*/

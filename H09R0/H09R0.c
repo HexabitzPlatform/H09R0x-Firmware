@@ -276,7 +276,8 @@ void Module_Init(void)
   MX_USART3_UART_Init();
   MX_USART4_UART_Init();
   MX_USART6_UART_Init();
-	
+
+  MX_ADC_Init();
 	
 
 
@@ -288,6 +289,7 @@ void Module_Init(void)
 */
 Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src, uint8_t dst, uint8_t shift)
 {
+
 		
 }
 
