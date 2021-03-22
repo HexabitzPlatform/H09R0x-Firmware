@@ -49,6 +49,8 @@ uint32_t temp32; float tempFloat, Relay_OldDC;
 
 /* Private variables ---------------------------------------------------------*/
 
+#define REF 1.24
+#define Temp_drift 0.005
 
 /* Private function prototypes -----------------------------------------------*/	
 float SampleC(void);
@@ -363,7 +365,7 @@ void LoadcellTask(void * argument)
 */
 float SampleC(void)
 {
-	tempC=(thermo_volt-1.24)/0.005;
+	tempC=(thermo_volt-REF)/Temp_drift;
 	return tempC;
 }
 
