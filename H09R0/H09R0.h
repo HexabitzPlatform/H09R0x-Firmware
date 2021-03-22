@@ -157,12 +157,8 @@ extern uint8_t RelayindMode;
    ----------------------------------------------------------------------- 
 */
 
-extern Module_Status Relay_on(uint32_t timeout);
-extern Module_Status Relay_off(void);
-extern Module_Status Relay_toggle(void);
-#ifdef H0FR6
-	extern Module_Status Relay_PWM(float dutyCycle);
-#endif
+extern float SampleC(void);
+extern float SampleF(void);
 
 /* -----------------------------------------------------------------------
 	|															Commands																 	|

@@ -34,7 +34,14 @@ extern FLASH_ProcessTypeDef pFlash;
 extern uint8_t numOfRecordedSnippets;
 
 
+
+uint32_t Thermo_buffer[1]={0};
+float raw_adc,thermo_volt,tempC;
+
+
 TIM_HandleTypeDef htim3;
+
+TaskHandle_t LoadcellHandle = NULL;
 TimerHandle_t xTimerRelay = NULL;
 	
 Relay_state_t Relay_state = STATE_OFF, Relay_Oldstate = STATE_ON; uint8_t RelayindMode = 0;
@@ -44,10 +51,10 @@ uint32_t temp32; float tempFloat, Relay_OldDC;
 
 
 /* Private function prototypes -----------------------------------------------*/	
-void RelayTimerCallback( TimerHandle_t xTimerRelay );
-Module_Status Set_Relay_PWM(uint32_t freq, float dutycycle);
-void TIM3_Init(void);
-void TIM3_DeInit(void);
+float SampleC(void);
+float SampleF(void);
+
+void LoadcellTask(void * argument);
 
 /* Create CLI commands --------------------------------------------------------*/
 
@@ -277,8 +284,9 @@ void Module_Init(void)
   MX_USART4_UART_Init();
   MX_USART6_UART_Init();
 
+  xTaskCreate(LoadcellTask, (const char*) "LoadcellTask", (2*configMINIMAL_STACK_SIZE), NULL, osPriorityNormal-osPriorityIdle, &LoadcellHandle);
+
   MX_ADC_Init();
-	
 
 
 }
@@ -325,6 +333,22 @@ uint8_t GetPort(UART_HandleTypeDef *huart)
 /*-----------------------------------------------------------*/
 
 
+/* --- load cell stream task
+*/
+void LoadcellTask(void * argument)
+{
+	while(1)
+	{
+		  HAL_ADC_Start_DMA(&hadc, Thermo_buffer, 1);
+		  raw_adc=Thermo_buffer[0];
+		  thermo_volt=raw_adc*(3.3/4095);
+		  HAL_Delay(1);
+		  HAL_ADC_Stop_DMA(&hadc);
+		taskYIELD();
+	}
+}
+
+/*-----------------------------------------------------------*/
 
 /*-----------------------------------------------------------*/	
 
@@ -337,6 +361,15 @@ uint8_t GetPort(UART_HandleTypeDef *huart)
 	|																APIs	 																 	|
    ----------------------------------------------------------------------- 
 */
+float SampleC(void)
+{
+	tempC=(thermo_volt-1.24)/0.005;
+	return tempC;
+}
 
+float SampleF(void)
+{
 
+	//return temp;
+}
 
