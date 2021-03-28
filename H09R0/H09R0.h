@@ -25,6 +25,10 @@
 #define _IND_LED_PORT		GPIOA
 #define _IND_LED_PIN		GPIO_PIN_11
 
+/* module constants */
+#define KELVIN_RATIO         273.15
+#define FAHRENHEIT_RATIO     1.8
+#define FAHRENHEIT_BIAS      32
 /* Port-related definitions */
 #define	NumOfPorts		5
 #define P_PROG 				P2						/* ST factory bootloader UART */
@@ -108,14 +112,20 @@
 
 typedef enum  { STATE_OFF, STATE_ON, STATE_PWM } Relay_state_t; 
 
+
+#define TIMERID_TIMEOUT_MEASUREMENT   0xFF
+#define STOP_MEASUREMENT_RANGING      0
+#define START_MEASUREMENT_RANGING     1
+
 /* H01R0_Status Type Definition */  
 typedef enum 
 {
-  H0FR6_OK = 0,
-	H0FR6_ERR_UnknownMessage = 1,
-	H0FR6_ERR_Wrong_Value = 2,
-	H0FR6_ERROR = 255
+    H09R0_OK = 0,
+	H09R0_ERR_UnknownMessage = 1,
+	H09R0_ERR_WrongParams = 2,
+	H09R0_ERROR = 255
 } Module_Status;
+
 
 /* Indicator LED */
 #ifdef H0FR1
@@ -145,7 +155,6 @@ extern void MX_USART3_UART_Init(void);
 extern void MX_USART4_UART_Init(void);
 extern void MX_USART6_UART_Init(void);
 
-
 /* Define UART Init prototypes */
 extern void MX_ADC_Init(void);
 
@@ -157,9 +166,10 @@ extern uint8_t RelayindMode;
    ----------------------------------------------------------------------- 
 */
 
-extern float SampleC(void);
-extern float SampleF(void);
-
+extern int SampleC(float * temp);
+extern int SampleF(float * temp);
+extern int SampleK(float * temp);
+extern float CalculationTemp(void);
 /* -----------------------------------------------------------------------
 	|															Commands																 	|
    ----------------------------------------------------------------------- 
