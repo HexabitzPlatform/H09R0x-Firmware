@@ -71,6 +71,7 @@ float DATA_To_SEND = 0.0f;     //float
 
 uint8_t global_port, global_module, global_mode, unit = Celsius;
 uint32_t global_period, global_timeout;
+float thermo_buffer;
 float *ptr_thermo_buffer;
 
 uint8_t H09R0_DATA_FORMAT = FMT_FLOAT;
@@ -79,40 +80,100 @@ float H09R0_Temp_F;
 float H09R0_Temp_K;
 
 /* Private function prototypes -----------------------------------------------*/
-int SendResults(float message, uint8_t Mode, uint8_t unit, uint8_t Port,
+int
+SendResults(float message, uint8_t Mode, uint8_t unit, uint8_t Port,
 		uint8_t Module, float *Buffer);
-float CalculationTemp(void);
+float
+CalculationTemp(void);
 //static void HandleTimeout(TimerHandle_t xTimer);
-int SampleC(float *temp);
-int SampleF(float *temp);
-int Samplek(float *temp);
-int StreamCToPort(uint8_t Port, uint8_t Module, uint32_t Period,
-		uint32_t Timeout);
+int
+SampleC(float *temp);
+int
+SampleF(float *temp);
+int
+Samplek(float *temp);
+int
+StreamCToPort(uint8_t Port, uint8_t Module, uint32_t Period, uint32_t Timeout);
 
-int StreamFToPort(uint8_t Port, uint8_t Module, uint32_t Period,
-		uint32_t Timeout);
+int
+StreamFToPort(uint8_t Port, uint8_t Module, uint32_t Period, uint32_t Timeout);
 
-int StreamKToPort(uint8_t Port, uint8_t Module, uint32_t Period,
-		uint32_t Timeout);
+int
+StreamKToPort(uint8_t Port, uint8_t Module, uint32_t Period, uint32_t Timeout);
 
-void ThermocoupleTask(void *argument);
-void TimerTask(void *argument);
-static void CheckForEnterKey(void);
-static void HandleTimeout(TimerHandle_t xTimer);
+void
+ThermocoupleTask(void *argument);
+void
+TimerTask(void *argument);
+static void
+CheckForEnterKey(void);
+static void
+HandleTimeout(TimerHandle_t xTimer);
 
 /* Create CLI commands --------------------------------------------------------*/
 
-static portBASE_TYPE unitCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+static portBASE_TYPE
+sampleCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString);
+static portBASE_TYPE
+streamCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString);
+static portBASE_TYPE
+stopCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString);
+static portBASE_TYPE
+unitCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString);
+static portBASE_TYPE
+demoCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
 		const int8_t *pcCommandString);
 
 /*-----------------------------------------------------------*/
 
+/* CLI command structure : sample */
+const CLI_Command_Definition_t sampleCommandDefinition =
+		{ (const int8_t*) "sample", /* The command string to type. */
+				(const int8_t*) "sample:\r\n Take one sample with the determinated unit \r\n\r\n",
+				sampleCommand, /* The function to run. */
+				0
+		/* one parameter is expected. */
+		};
+
+/* CLI command structure : stream */
+const CLI_Command_Definition_t streamCommandDefinition =
+		{ (const int8_t*) "stream", /* The command string to type. */
+				(const int8_t*) "stream:\r\n Stream from ch (1 or 2) to the CLI, buffer or port with period (ms) and total time (ms). \r\n\r\n",
+				streamCommand, /* The function to run. */
+				-1
+		/* Multiparameters are expected. */
+		};
+
 /* CLI command structure : unit */
 const CLI_Command_Definition_t unitCommandDefinition = { (const int8_t*) "unit", /* The command string to type. */
+
 (const int8_t*) "unit:\r\n Set the measurement unit (C, F, K )\r\n\r\n",
 		unitCommand, /* The function to run. */
-		1 /* one parameter is expected. */
+		1
+/* one parameter is expected. */
 };
+
+/* CLI command structure : stop */
+const CLI_Command_Definition_t stopCommandDefinition =
+		{ (const int8_t*) "stop", /* The command string to type. */
+				(const int8_t*) "stop:\r\n Stop streaming and put HX711 into sleep mode\r\n\r\n",
+				stopCommand, /* The function to run. */
+				0
+		/* No parameters are expected. */
+		};
+
+/* CLI command structure : demo */
+const CLI_Command_Definition_t demoCommandDefinition =
+		{ (const int8_t*) "demo", /* The command string to type. */
+				(const int8_t*) "demo:\r\n Run a demo program to test module functionality\r\n\r\n",
+				demoCommand, /* The function to run. */
+				1
+		/* one parameter is expected. */
+		};
 
 /* -----------------------------------------------------------------------
  |												 Private Functions	 														|
@@ -377,7 +438,12 @@ Module_Status Module_MessagingTask(uint16_t code, uint8_t port, uint8_t src,
  */
 void RegisterModuleCLICommands(void) {
 
+	FreeRTOS_CLIRegisterCommand(&sampleCommandDefinition);
+	FreeRTOS_CLIRegisterCommand(&streamCommandDefinition);
+	FreeRTOS_CLIRegisterCommand(&stopCommandDefinition);
 	FreeRTOS_CLIRegisterCommand(&unitCommandDefinition);
+	FreeRTOS_CLIRegisterCommand(&demoCommandDefinition);
+
 }
 
 /*-----------------------------------------------------------*/
@@ -525,10 +591,11 @@ void ThermocoupleTask(void *argument) {
 			DATA_To_SEND = CalculationTemp();
 			break;
 		case Fahrenheit:
-			DATA_To_SEND = (CalculationTemp() * FAHRENHEIT_RATIO) + FAHRENHEIT_BIAS;
+			DATA_To_SEND = (CalculationTemp() * FAHRENHEIT_RATIO)
+					+ FAHRENHEIT_BIAS;
 			break;
 		case Kelvin:
-			DATA_To_SEND = CalculationTemp() +  KELVIN_RATIO;
+			DATA_To_SEND = CalculationTemp() + KELVIN_RATIO;
 			break;
 		default:
 			DATA_To_SEND = CalculationTemp();
@@ -597,7 +664,7 @@ static void CheckForEnterKey(void) {
 		if (UARTRxBuf[PcPort - 1][chr] == '\r') {
 			UARTRxBuf[PcPort - 1][chr] = 0;
 			startMeasurementRanging = STOP_MEASUREMENT_RANGING;
-			global_mode = IDLE_CASE;		          // Stop the streaming task
+			global_mode = IDLE_CASE;		      // Stop the streaming task
 			xTimerStop(xTimer, 0);            // Stop the timeout timer
 			break;
 		}
@@ -614,7 +681,7 @@ static void HandleTimeout(TimerHandle_t xTimer) {
 	/* Get Timer ID */
 	tid = (uint32_t) pvTimerGetTimerID(xTimer);
 	if (TIMERID_TIMEOUT_MEASUREMENT == tid) {
-		global_mode = IDLE_CASE;		          // Stop the streaming task
+		global_mode = IDLE_CASE;		      // Stop the streaming task
 		startMeasurementRanging = STOP_MEASUREMENT_RANGING; // stop streaming
 	}
 }
@@ -756,9 +823,9 @@ int StreamKToBuffer(float *Buffer, uint32_t Period, uint32_t Timeout) {
 	return (H09R0_OK);
 }
 
+
 /*------------------------------------------------*/
 
-/*-----------------------------------------------------------*/
 float Average(uint8_t samples) {
 
 	static float avr = 0, sum = 0, DATA_To_AVR;
@@ -786,6 +853,89 @@ float Average(uint8_t samples) {
 	return avr;
 }
 
+/*-----------------------------------------------------------*/
+
+int Stop(void) {
+	global_mode = IDLE_CASE;
+
+	xTimerStop(xTimer, 0);
+
+	return H09R0_OK;
+}
+
+
+
+/* --- stream weightvalue from channel ch to CLI
+*/
+int StreamCToCLI(uint32_t Period, uint32_t Timeout)
+{
+
+	global_period=Period;
+	global_timeout=Timeout;
+	global_mode=STREAM_CLI_CASE;
+	unit=Celsius;
+	if ((global_timeout > 0) && (global_timeout < 0xFFFFFFFF))
+  {
+		/* start software timer which will create event timeout */
+		/* Create a timeout timer */
+		xTimer = xTimerCreate( "Measurement Timeout", pdMS_TO_TICKS(global_timeout), pdFALSE, ( void * ) TIMERID_TIMEOUT_MEASUREMENT, HandleTimeout );
+		/* Start the timeout timer */
+		xTimerStart( xTimer, portMAX_DELAY );
+	}
+	if (global_timeout > 0)
+	{
+		startMeasurementRanging = START_MEASUREMENT_RANGING;
+	}
+
+	return (H09R0_OK);
+}
+
+int StreamKToCLI(uint32_t Period, uint32_t Timeout)
+{
+
+	global_period=Period;
+	global_timeout=Timeout;
+	global_mode=STREAM_CLI_CASE;
+	unit=Kelvin;
+	if ((global_timeout > 0) && (global_timeout < 0xFFFFFFFF))
+  {
+		/* start software timer which will create event timeout */
+		/* Create a timeout timer */
+		xTimer = xTimerCreate( "Measurement Timeout", pdMS_TO_TICKS(global_timeout), pdFALSE, ( void * ) TIMERID_TIMEOUT_MEASUREMENT, HandleTimeout );
+		/* Start the timeout timer */
+		xTimerStart( xTimer, portMAX_DELAY );
+	}
+	if (global_timeout > 0)
+	{
+		startMeasurementRanging = START_MEASUREMENT_RANGING;
+	}
+
+	return (H09R0_OK);
+}
+
+int StreamFToCLI(uint32_t Period, uint32_t Timeout)
+{
+
+	global_period=Period;
+	global_timeout=Timeout;
+	global_mode=STREAM_CLI_CASE;
+	unit=Fahrenheit;
+	if ((global_timeout > 0) && (global_timeout < 0xFFFFFFFF))
+  {
+		/* start software timer which will create event timeout */
+		/* Create a timeout timer */
+		xTimer = xTimerCreate( "Measurement Timeout", pdMS_TO_TICKS(global_timeout), pdFALSE, ( void * ) TIMERID_TIMEOUT_MEASUREMENT, HandleTimeout );
+		/* Start the timeout timer */
+		xTimerStart( xTimer, portMAX_DELAY );
+	}
+	if (global_timeout > 0)
+	{
+		startMeasurementRanging = START_MEASUREMENT_RANGING;
+	}
+
+	return (H09R0_OK);
+}
+
 /* -----------------------------------------------------------------------
  |															Commands																 	|
  -----------------------------------------------------------------------
@@ -811,11 +961,11 @@ static portBASE_TYPE unitCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
 		unit = Celsius;
 		strcpy((char*) pcWriteBuffer,
 				(char*) "Used measurement unit: Celsius\r\n");
-	} else if (!strncmp((const char*) pcParameterString1, "k", 2)) {
+	} else if (!strncmp((const char*) pcParameterString1, "k", 1)) {
 		unit = Kelvin;
 		strcpy((char*) pcWriteBuffer,
 				(char*) "Used measurement unit: Kelvin\r\n");
-	} else if (!strncmp((const char*) pcParameterString1, "f", 5)) {
+	} else if (!strncmp((const char*) pcParameterString1, "f", 1)) {
 		unit = Fahrenheit;
 		strcpy((char*) pcWriteBuffer,
 				(char*) "Used measurement unit: Fahrenheit\r\n");
@@ -832,4 +982,273 @@ static portBASE_TYPE unitCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
 	return pdFALSE;
 }
 
+/*-----------------------------------------------------------*/
+
+static portBASE_TYPE sampleCommand(int8_t *pcWriteBuffer,
+		size_t xWriteBufferLen, const int8_t *pcCommandString) {
+	static const int8_t *pcMessageError = (int8_t*) "Wrong parameter\r\n";
+
+	Module_Status result = H09R0_OK;
+
+	/* Remove compile time warnings about unused parameters, and check the
+	 write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	 write buffer length is adequate, so does not check for buffer overflows. */
+	(void) pcCommandString;
+	(void) xWriteBufferLen;
+	configASSERT(pcWriteBuffer);
+
+	switch (unit) {
+	case Celsius:
+		SampleC(&DATA_To_SEND);
+		break;
+	case Fahrenheit:
+		SampleF(&DATA_To_SEND);
+		break;
+	case Kelvin:
+		SampleK(&DATA_To_SEND);
+		break;
+	default:
+		SampleC(&DATA_To_SEND);
+	}
+
+	global_mode = SAMPLE_CLI_CASE;
+	SendResults(DATA_To_SEND, global_mode, unit, 0, 0, NULL);
+
+	if (result != H09R0_OK)
+		strcpy((char*) pcWriteBuffer, (char*) pcMessageError);
+	/* clean terminal output */
+	memset((char*) pcWriteBuffer, 0, configCOMMAND_INT_MAX_OUTPUT_SIZE);
+
+	/* There is no more data to return after this single string, so return pdFALSE. */
+	return pdFALSE;
+}
+
+/*-----------------------------------------------------------*/
+
+static portBASE_TYPE stopCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString) {
+
+	/* Remove compile time warnings about unused parameters, and check the
+	 write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	 write buffer length is adequate, so does not check for buffer overflows. */
+	(void) xWriteBufferLen;
+	configASSERT(pcWriteBuffer);
+	thermo_buffer = 0;
+	Stop();
+
+	/* There is no more data to return after this single string, so return pdFALSE. */
+	return pdFALSE;
+}
+
+/*-----------------------------------------------------------*/
+
+static portBASE_TYPE streamCommand(int8_t *pcWriteBuffer,
+		size_t xWriteBufferLen, const int8_t *pcCommandString) {
+	static const int8_t *pcMessageBuffer =
+			(int8_t*) "Streaming measurements to internal buffer. Access in the CLI using module parameters: thermocouble \n\r";
+	static const int8_t *pcMessageModule =
+			(int8_t*) "Streaming measurements to port P%d in module #%d\n\r";
+	static const int8_t *pcMessageCLI =
+			(int8_t*) "Streaming measurements to the CLI\n\n\r";
+	static const int8_t *pcMessageError = (int8_t*) "Wrong parameter\r\n";
+	static const int8_t *pcMessageWrongName = (int8_t*) "Wrong module name\r\n";
+	int8_t *pcParameterString1; /* period */
+	int8_t *pcParameterString2; /* timeout */
+	int8_t *pcParameterString3; /* port or buffer */
+	int8_t *pcParameterString4; /* module */
+	portBASE_TYPE xParameterStringLength1 = 0;
+	portBASE_TYPE xParameterStringLength2 = 0;
+	portBASE_TYPE xParameterStringLength3 = 0;
+	portBASE_TYPE xParameterStringLength4 = 0;
+	uint32_t period = 0;
+	uint32_t timeout = 0;
+	uint8_t port = 0;
+	uint8_t module = 0;
+
+	Module_Status result = H09R0_OK;
+
+	/* Remove compile time warnings about unused parameters, and check the
+	 write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	 write buffer length is adequate, so does not check for buffer overflows. */
+	(void) xWriteBufferLen;
+	configASSERT(pcWriteBuffer);
+
+	/* Obtain the 1st parameter string: channel */
+	pcParameterString1 = (int8_t*) FreeRTOS_CLIGetParameter(pcCommandString, 1,
+			&xParameterStringLength1);
+	/* Obtain the 2nd parameter string: period */
+	pcParameterString2 = (int8_t*) FreeRTOS_CLIGetParameter(pcCommandString, 2,
+			&xParameterStringLength2);
+	/* Obtain the 3rd parameter string: timeout */
+	pcParameterString3 = (int8_t*) FreeRTOS_CLIGetParameter(pcCommandString, 3,
+			&xParameterStringLength3);
+	/* Obtain the 4th parameter string: port */
+	pcParameterString4 = (int8_t*) FreeRTOS_CLIGetParameter(pcCommandString, 4,
+			&xParameterStringLength4);
+
+	if (NULL != pcParameterString1) {
+		period = atoi((char*) pcParameterString1);
+	} else {
+		result = H09R0_ERR_WrongParams;
+	}
+
+	if (NULL != pcParameterString2) {
+		if (!strncmp((const char*) pcParameterString2, "inf", 3)) {
+			timeout = portMAX_DELAY;
+		} else {
+			timeout = atoi((char*) pcParameterString2);
+		}
+	} else {
+		result = H09R0_ERR_WrongParams;
+	}
+	/* streaming data to internal buffer (module parameter) */
+	if (NULL != pcParameterString3
+			&& !strncmp((const char*) pcParameterString3, "buffer", 6)) {
+		strcpy((char*) pcWriteBuffer, (char*) pcMessageBuffer);
+		switch (unit) {
+		case Celsius:
+			StreamCToBuffer(&thermo_buffer, period, timeout);
+			break;
+		case Fahrenheit:
+			StreamFToBuffer(&thermo_buffer, period, timeout);
+			break;
+		case Kelvin:
+			StreamKToBuffer(&thermo_buffer, period, timeout);
+			break;
+		default:
+			StreamCToBuffer(&thermo_buffer, period, timeout);
+		}
+
+		// Return right away here as we don't want to block the CLI
+		return pdFALSE;
+	}
+	/* streaming data to port */
+	else if (NULL != pcParameterString3 && NULL != pcParameterString4
+			&& pcParameterString3[0] == 'p') {
+		port = (uint8_t) atol((char*) pcParameterString3 + 1);
+		module = (uint8_t) GetID((char*) pcParameterString4);
+		if (module != (uint8_t) BOS_ERR_WrongName) {
+			sprintf((char*) pcWriteBuffer, (char*) pcMessageModule, port,
+					module);
+
+			switch (unit) {
+			case Celsius:
+				StreamCToPort(port, module, period, timeout);
+				break;
+			case Fahrenheit:
+				StreamFToPort(port, module, period, timeout);
+				break;
+			case Kelvin:
+				StreamKToPort(port, module, period, timeout);
+				break;
+			default:
+				StreamCToPort(port, module, period, timeout);
+			}
+			// Return right away here as we don't want to block the CLI
+			return pdFALSE;
+		} else {
+			strcpy((char*) pcWriteBuffer, (char*) pcMessageWrongName);
+		}
+	}
+
+	/* Stream to the CLI */
+		else if (NULL == pcParameterString3)
+		{
+
+				strcpy(( char * ) pcWriteBuffer, ( char * ) pcMessageCLI);
+				writePxMutex(PcPort, (char *)pcWriteBuffer, strlen((char *)pcWriteBuffer), cmd50ms, HAL_MAX_DELAY);
+				switch (unit) {
+				case Celsius:
+					StreamCToCLI(period, timeout);
+					break;
+				case Fahrenheit:
+					StreamFToCLI(period, timeout);
+					break;
+				case Kelvin:
+					StreamKToCLI(period, timeout);
+					break;
+				default:
+					StreamCToCLI(period, timeout);
+				}
+
+				/* Wait till the end of stream */
+				while(startMeasurementRanging != STOP_MEASUREMENT_RANGING){taskYIELD();}
+				/* clean terminal output */
+				memset((char *) pcWriteBuffer, 0, strlen((char *)pcWriteBuffer));
+		}
+
+	else {
+		result = H09R0_ERR_WrongParams;
+	}
+
+	if (H09R0_ERR_WrongParams == result) {
+		strcpy((char*) pcWriteBuffer, (char*) pcMessageError);
+	}
+
+	/* There is no more data to return after this single string, so return pdFALSE. */
+	return pdFALSE;
+
+}
+
+/*-----------------------------------------------------------*/
+
+portBASE_TYPE demoCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
+		const int8_t *pcCommandString) {
+	static const int8_t *pcMessage =
+			(int8_t*) "Streaming thermocouble temp: \r\n";
+	static const int8_t *pcMessageError = (int8_t*) "Wrong parameter\r\n";
+	portBASE_TYPE xParameterStringLength1 = 0;
+	Module_Status result = H09R0_OK;
+
+	/* Remove compile time warnings about unused parameters, and check the
+	 write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	 write buffer length is adequate, so does not check for buffer overflows. */
+	(void) pcCommandString;
+	(void) xWriteBufferLen;
+	configASSERT(pcWriteBuffer);
+
+
+
+
+	/* Respond to the command */
+
+		strcpy((char*) pcWriteBuffer, (char*) pcMessage);
+		writePxMutex(PcPort, (char*) pcWriteBuffer,
+				strlen((char*) pcWriteBuffer), cmd50ms, HAL_MAX_DELAY);
+		switch (unit) {
+		case Celsius:
+			StreamCToCLI(500, 10000);
+			break;
+		case Fahrenheit:
+			StreamFToCLI(500, 10000);
+			break;
+		case Kelvin:
+			StreamKToCLI(500, 10000);
+			break;
+		default:
+			StreamCToCLI(500, 10000);
+		}
+
+		/* Wait till the end of stream */
+		while (startMeasurementRanging != STOP_MEASUREMENT_RANGING) {
+			Delay_ms(1);
+		};
+
+
+	if (result != H09R0_OK) {
+		strcpy((char*) pcWriteBuffer, (char*) pcMessageError);
+	}
+
+	/* clean terminal output */
+	memset((char*) pcWriteBuffer, 0, strlen((char*) pcWriteBuffer));
+
+	/* There is no more data to return after this single string, so return
+	 pdFALSE. */
+	return pdFALSE;
+}
+
+/*-------------------------------------------*/
+
+
 /*-------------------------------------------------------*/
+
