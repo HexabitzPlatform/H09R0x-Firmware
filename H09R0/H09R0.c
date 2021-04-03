@@ -142,7 +142,7 @@ const CLI_Command_Definition_t sampleCommandDefinition =
 /* CLI command structure : stream */
 const CLI_Command_Definition_t streamCommandDefinition =
 		{ (const int8_t*) "stream", /* The command string to type. */
-				(const int8_t*) "stream:\r\n Stream from ch (1 or 2) to the CLI, buffer or port with period (ms) and total time (ms). \r\n\r\n",
+				(const int8_t*) "stream:\r\n Stream temp to the CLI, buffer or port with period (ms) and total time (ms). \r\n\r\n",
 				streamCommand, /* The function to run. */
 				-1
 		/* Multiparameters are expected. */
@@ -160,7 +160,7 @@ const CLI_Command_Definition_t unitCommandDefinition = { (const int8_t*) "unit",
 /* CLI command structure : stop */
 const CLI_Command_Definition_t stopCommandDefinition =
 		{ (const int8_t*) "stop", /* The command string to type. */
-				(const int8_t*) "stop:\r\n Stop streaming and put HX711 into sleep mode\r\n\r\n",
+				(const int8_t*) "stop:\r\n Stop streaming \r\n\r\n",
 				stopCommand, /* The function to run. */
 				0
 		/* No parameters are expected. */
@@ -171,7 +171,7 @@ const CLI_Command_Definition_t demoCommandDefinition =
 		{ (const int8_t*) "demo", /* The command string to type. */
 				(const int8_t*) "demo:\r\n Run a demo program to test module functionality\r\n\r\n",
 				demoCommand, /* The function to run. */
-				1
+				0
 		/* one parameter is expected. */
 		};
 
