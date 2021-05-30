@@ -130,6 +130,15 @@ demoCommand(int8_t *pcWriteBuffer, size_t xWriteBufferLen,
 
 /*-----------------------------------------------------------*/
 
+/* CLI command structure : demo */
+const CLI_Command_Definition_t demoCommandDefinition =
+		{ (const int8_t*) "demo", /* The command string to type. */
+				(const int8_t*) "demo:\r\n Run a demo program to test module functionality\r\n\r\n",
+				demoCommand, /* The function to run. */
+				0
+		/* one parameter is expected. */
+		};
+
 /* CLI command structure : sample */
 const CLI_Command_Definition_t sampleCommandDefinition =
 		{ (const int8_t*) "sample", /* The command string to type. */
@@ -166,14 +175,7 @@ const CLI_Command_Definition_t stopCommandDefinition =
 		/* No parameters are expected. */
 		};
 
-/* CLI command structure : demo */
-const CLI_Command_Definition_t demoCommandDefinition =
-		{ (const int8_t*) "demo", /* The command string to type. */
-				(const int8_t*) "demo:\r\n Run a demo program to test module functionality\r\n\r\n",
-				demoCommand, /* The function to run. */
-				0
-		/* one parameter is expected. */
-		};
+
 
 /* -----------------------------------------------------------------------
  |												 Private Functions	 														|
@@ -474,9 +476,9 @@ int SendResults(float message, uint8_t Mode, uint8_t Unit, uint8_t Port,
 	float Raw_Msg = 0.0f;
 	uint32_t RawMsgInt = 0;
 	int8_t *pcOutputString;
-	static const int8_t *pcWeightMsg = (int8_t*) "Weight (%s): %f\r\n";
+	static const int8_t *pcWeightMsg = (int8_t*) "Temp (%s): %f\r\n";
 	static const int8_t *pcWeightVerboseMsg = (int8_t*) "%f\r\n";
-	static const int8_t *pcWeightMsgUINT = (int8_t*) "Weight (%s): %d\r\n";
+	static const int8_t *pcWeightMsgUINT = (int8_t*) "Temp (%s): %d\r\n";
 	static const int8_t *pcWeightVerboseMsgUINT = (int8_t*) "%d\r\n";
 	char *strUnit;
 	static uint8_t temp[4];
