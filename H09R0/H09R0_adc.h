@@ -1,9 +1,10 @@
 /*
- * H09R0_adc.h
- *
- *  Created on: ١٧‏/٠٣‏/٢٠٢١
- *      Author: shift
- */
+    BitzOS (BOS) V0.2.5 - Copyright (C) 2017-2021 Hexabitz
+    All rights reserved
+
+    File Name     : H09R0_adc.h
+    Description   : Peripheral ADC setup header file.
+*/
 
 #ifndef H09R0_ADC_H_
 #define H09R0_ADC_H_
@@ -16,8 +17,6 @@
 
 DMA_HandleTypeDef hdma_adc;
 ADC_HandleTypeDef hadc;
-
 #define Thermocable_input_Pin GPIO_PIN_7
 #define Thermocable_input_GPIO_Port GPIOA
 
-//extern uint32_t Thermo_buffer[1]={0};

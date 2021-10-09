@@ -1,10 +1,10 @@
 /*
-    BitzOS (BOS) V0.2.4 - Copyright (C) 2017-2021 Hexabitz
+    BitzOS (BOS) V0.2.5 - Copyright (C) 2017-2021 Hexabitz
     All rights reserved
 		
     File Name     : H09R0.h
-    Description   : Header file for module H0FR1 SPDT mechanical DC relay
-										and module H0FR6 Solid state AC relay (AQH3213A).
+ Description   : Header file for module H09R0
+  	  	  	  	 thermocouple temperature sensor module
 */
 	
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -57,56 +57,40 @@
 /* Port Definitions */
 #define	USART1_TX_PIN		GPIO_PIN_9
 #define	USART1_RX_PIN		GPIO_PIN_10
-#define	USART1_TX_PORT	GPIOA
-#define	USART1_RX_PORT	GPIOA
-#define	USART1_AF				GPIO_AF1_USART1
+#define	USART1_TX_PORT		GPIOA
+#define	USART1_RX_PORT		GPIOA
+#define	USART1_AF			GPIO_AF1_USART1
 
 #define	USART2_TX_PIN		GPIO_PIN_2
 #define	USART2_RX_PIN		GPIO_PIN_3
-#define	USART2_TX_PORT	GPIOA
-#define	USART2_RX_PORT	GPIOA
-#define	USART2_AF				GPIO_AF1_USART2
+#define	USART2_TX_PORT		GPIOA
+#define	USART2_RX_PORT		GPIOA
+#define	USART2_AF			GPIO_AF1_USART2
 
 #define	USART3_TX_PIN		GPIO_PIN_10
 #define	USART3_RX_PIN		GPIO_PIN_11
-#define	USART3_TX_PORT	GPIOB
-#define	USART3_RX_PORT	GPIOB
-#define	USART3_AF				GPIO_AF4_USART3
+#define	USART3_TX_PORT		GPIOB
+#define	USART3_RX_PORT		GPIOB
+#define	USART3_AF			GPIO_AF4_USART3
 
 #define	USART4_TX_PIN		GPIO_PIN_0
 #define	USART4_RX_PIN		GPIO_PIN_1
-#define	USART4_TX_PORT	GPIOA
-#define	USART4_RX_PORT	GPIOA
-#define	USART4_AF				GPIO_AF4_USART4
+#define	USART4_TX_PORT		GPIOA
+#define	USART4_RX_PORT		GPIOA
+#define	USART4_AF			GPIO_AF4_USART4
 
 #define	USART5_TX_PIN		GPIO_PIN_3
 #define	USART5_RX_PIN		GPIO_PIN_4
-#define	USART5_TX_PORT	GPIOB
-#define	USART5_RX_PORT	GPIOB
-#define	USART5_AF				GPIO_AF4_USART5
+#define	USART5_TX_PORT	    GPIOB
+#define	USART5_RX_PORT		GPIOB
+#define	USART5_AF			GPIO_AF4_USART5
 
 #define	USART6_TX_PIN		GPIO_PIN_4
 #define	USART6_RX_PIN		GPIO_PIN_5
-#define	USART6_TX_PORT	GPIOA
-#define	USART6_RX_PORT	GPIOA
-#define	USART6_AF				GPIO_AF5_USART6
+#define	USART6_TX_PORT		GPIOA
+#define	USART6_RX_PORT		GPIOA
+#define	USART6_AF			GPIO_AF5_USART6
 
-/* Module-specific Definitions */
-
-#ifdef H0FR1
-	#define	_Relay_PIN						GPIO_PIN_0
-	#define	_Relay_PORT						GPIOB
-	#define _Relay_GPIO_CLK()			__GPIOB_CLK_ENABLE();
-#endif
-#ifdef H0FR6
-	#define	_Relay_PIN						GPIO_PIN_0
-	#define	_Relay_PORT						GPIOB
-	#define _Relay_TIM_CH					TIM_CHANNEL_3
-	#define _Relay_GPIO_CLK()			__GPIOB_CLK_ENABLE();
-	#define PWM_TIMER_CLOCK			16000000
-	#define Relay_PWM_DEF_FREQ				24000
-	#define Relay_PWM_DEF_PERIOD			((float) (1/Relay_PWM_FREQ) )
-#endif
 
 #define NUM_MODULE_PARAMS		1
 
@@ -128,14 +112,7 @@ typedef enum
 
 
 /* Indicator LED */
-#ifdef H0FR1
-	#define _IND_LED_PORT		GPIOA
-	#define _IND_LED_PIN		GPIO_PIN_11
-#endif
-#ifdef H0FR6
-	#define _IND_LED_PORT		GPIOC
-	#define _IND_LED_PIN		GPIO_PIN_14
-#endif
+
 
 /* Export UART variables */
 extern UART_HandleTypeDef huart1;
@@ -157,10 +134,9 @@ extern void MX_USART6_UART_Init(void);
 
 /* Define UART Init prototypes */
 extern void MX_ADC_Init(void);
+extern void ADC_Channel_config(void);
 
-extern Relay_state_t Relay_State; 
-extern uint8_t RelayindMode;
-	
+extern uint32_t Thermo_buffer[1];
 /* -----------------------------------------------------------------------
 	|																APIs	 																 	|
    ----------------------------------------------------------------------- 
@@ -170,19 +146,6 @@ extern int SampleC(float * temp);
 extern int SampleF(float * temp);
 extern int SampleK(float * temp);
 extern float CalculationTemp(void);
-/* -----------------------------------------------------------------------
-	|															Commands																 	|
-   ----------------------------------------------------------------------- 
-*/
 
-extern const CLI_Command_Definition_t onCommandDefinition;
-extern const CLI_Command_Definition_t offCommandDefinition;
-extern const CLI_Command_Definition_t toggleCommandDefinition;
-extern const CLI_Command_Definition_t ledModeCommandDefinition;
-#ifdef H0FR6
-	extern const CLI_Command_Definition_t pwmCommandDefinition;
 #endif
-
-#endif /* H0FR6_H */
-
 /************************ (C) COPYRIGHT HEXABITZ *****END OF FILE****/
