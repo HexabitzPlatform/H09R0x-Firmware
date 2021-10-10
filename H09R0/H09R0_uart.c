@@ -1,49 +1,20 @@
-/**
-  ******************************************************************************
-  * File Name          : H09R0_uart.c
-  * Description        : This file provides code for the configuration
-  *                      of the USART instances.
-  ******************************************************************************
-  *
-  * COPYRIGHT(c) 2015 STMicroelectronics
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */
-	
 /*
-		MODIFIED by Hexabitz for BitzOS (BOS) V0.1.6 - Copyright (C) 2017-2019 Hexabitz
-    All rights reserved
-*/
+ BitzOS (BOS) V0.2.5 - Copyright (C) 2017-2021 Hexabitz
+ All rights reserved
+
+ File Name     : H09R0_uart.c
+ Description   : Source Code provides configuration for USART instances.
+
+ */
 
 /* Includes ------------------------------------------------------------------*/
 #include "BOS.h"
 
-
-FlagStatus UartRxReady = RESET;
-FlagStatus UartTxReady = RESET;
-
+#ifndef __N
+	 uint16_t arrayPortsDir[MaxNumOfModules];									/* Array ports directions */
+#else
+	 uint16_t arrayPortsDir[__N];
+#endif 
 
 /* USART1 init function */
 #ifdef _Usart1
@@ -86,7 +57,7 @@ void MX_USART2_UART_Init(void)
 	#if _P2pol_reversed
 		huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
 		huart2.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
-	  HAL_UART_Init(&huart2);
+		HAL_UART_Init(&huart2);
 	#endif	
 }
 #endif
@@ -129,7 +100,7 @@ void MX_USART4_UART_Init(void)
   huart4.Init.OneBitSampling = UART_ONEBIT_SAMPLING_DISABLED;
   huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
 	HAL_UART_Init(&huart4);
-	#if _P6pol_reversed	
+	#if _P1pol_reversed
 		huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
 		huart4.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
 	  HAL_UART_Init(&huart4);
@@ -175,7 +146,7 @@ void MX_USART6_UART_Init(void)
   huart6.Init.OneBitSampling = UART_ONEBIT_SAMPLING_DISABLED;
   huart6.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
 	HAL_UART_Init(&huart6);
-	#if _P3pol_reversed
+	#if _P3pol_reversed	
 		huart6.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
 		huart6.AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
 	  HAL_UART_Init(&huart6);
@@ -417,6 +388,26 @@ HAL_StatusTypeDef writePxITMutex(uint8_t port, char *buffer, uint16_t n, uint32_
 	return result;
 }
 
+/* --- Non-blocking (DMA-based) write protected with a semaphore --- 
+*/
+HAL_StatusTypeDef writePxDMAMutex(uint8_t port, char *buffer, uint16_t n, uint32_t mutexTimeout)
+{
+	HAL_StatusTypeDef result = HAL_ERROR; 
+	UART_HandleTypeDef* hUart = GetUart(port);
+
+	if (hUart != NULL) {	
+		/* Wait for the mutex to be available. */
+		if (osSemaphoreWait(PxTxSemaphoreHandle[port], mutexTimeout) == osOK) {
+			/* Setup TX DMA on this port */
+			DMA_MSG_TX_Setup(hUart);
+			/* Transmit the message */
+			result = HAL_UART_Transmit_DMA(hUart, (uint8_t *)buffer, n);
+		}
+	}
+	
+	return result;
+}
+
 /* --- Update baudrate for this port --- 
 */
 BOS_Status UpdateBaudrate(uint8_t port, uint32_t baudrate)
@@ -430,4 +421,75 @@ BOS_Status UpdateBaudrate(uint8_t port, uint32_t baudrate)
 	return result;
 }
 
+/* --- Get the UART for a given port. 
+*/
+UART_HandleTypeDef* GetUart(uint8_t port)
+{
+	switch (port)
+	{
+	#ifdef _P1
+		case P1 : 
+			return P1uart;	
+	#endif
+	#ifdef _P2
+		case P2 :
+			return P2uart;
+	#endif
+	#ifdef _P3
+		case P3 :
+			return P3uart;
+	#endif
+	#ifdef _P4
+		case P4 :
+			return P4uart;
+	#endif
+	#ifdef _P5
+		case P5 :
+			return P5uart;
+	#endif
+	#ifdef _P6
+		case P6 :
+			return P6uart;
+	#endif
+	#ifdef _P7
+		case P7 :
+			return P7uart;
+	#endif
+	#ifdef _P8
+		case P8 :
+			return P8uart;
+	#endif
+	#ifdef _P9
+		case P9 :
+			return P9uart;
+	#endif
+	#ifdef _P10
+		case P10 :
+			return P10uart;
+	#endif
+		default:
+			return 0;
+	}		
+}
+
+/*-----------------------------------------------------------*/
+
+/* --- Swap UART pins ( NORMAL | REVERSED )--- 
+*/
+void SwapUartPins(UART_HandleTypeDef *huart, uint8_t direction)
+{
+	if (huart != NULL) {
+		if (direction == REVERSED) {
+			arrayPortsDir[myID-1] |= (0x8000>>(GetPort(huart)-1));		/* Set bit to one */
+			huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
+			huart->AdvancedInit.Swap = UART_ADVFEATURE_SWAP_ENABLE;
+			HAL_UART_Init(huart);
+		} else if (direction == NORMAL) {
+			arrayPortsDir[myID-1] &= (~(0x8000>>(GetPort(huart)-1)));		/* Set bit to zero */
+			huart->AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_SWAP_INIT;
+			huart->AdvancedInit.Swap = UART_ADVFEATURE_SWAP_DISABLE;
+			HAL_UART_Init(huart);		
+		}
+	}
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
