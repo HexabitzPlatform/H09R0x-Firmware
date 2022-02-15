@@ -17,6 +17,8 @@
 #include "H09R0_uart.h"
 #include "H09R0_gpio.h"
 #include "H09R0_dma.h"
+#include "H09R0_inputs.h"
+#include "H09R0_eeprom.h"
 	
 	
 /* Exported definitions -------------------------------------------------------*/
@@ -146,6 +148,8 @@ extern int SampleC(float * temp);
 extern int SampleF(float * temp);
 extern int SampleK(float * temp);
 extern float CalculationTemp(void);
+void remoteBootloaderUpdate(uint8_t src,uint8_t dst,uint8_t inport,uint8_t outport);
+void SetupPortForRemoteBootloaderUpdate(uint8_t port);
 
 #endif
 /************************ (C) COPYRIGHT HEXABITZ *****END OF FILE****/
