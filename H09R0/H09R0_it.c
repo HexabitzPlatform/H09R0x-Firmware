@@ -11,6 +11,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "BOS.h"
 
+uint8_t temp_length[NumOfPorts] = {0};
+uint8_t temp_index[NumOfPorts] = {0};
+
 extern DMA_HandleTypeDef hdma_adc;
 extern ADC_HandleTypeDef hadc;
 
